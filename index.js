@@ -18,7 +18,7 @@
 function ilkiniDon(stringArray, callback) {
   return callback(stringArray[0])
 }
-console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin+metin}));
+console.log('örnek görev:', ilkiniDon(['as', 'sa'], function (metin) { return metin + metin }));
 
 // Başlangıç Challenge'ı Sonu
 
@@ -30,17 +30,18 @@ console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin
   Aşağıdaki skor1 ve skor2 kodlarını inceleyiniz ve aşağıdaki soruları altına not alarak cevaplayın
   
   1. skor1 ve skor2 arasındaki fark nedir?
-  
+  skor1 de closure kullanımı varken, skor2 fonksiyonunda sadece skor parametresi döndürülür.
   2. Hangisi bir closure kullanmaktadır? Nasıl tarif edebilirsin? (yarınki derste öğreneceksin :) )
-  
+  skor1 fonksiyonu closure kullanır. Çünkü skorArtirici fonksiyonunun altında skorGuncelle fonksiyonu da saklanarak skor parametresi saklanmış durumda. Yani iç içe bir fonksiyon oluşturulmuş.
   3. Hangi durumda skor1 tercih edilebilir? Hangi durumda skor2 daha mantıklıdır?
+  eğer güvenlik gibi bir durum söz konusu ise skor1 tercih edilmeli iken, daha genel bir durumda skor2 tercih edilmelidir.
 */
 
 // skor1 kodları
 function skorArtirici() {
   let skor = 0;
   return function skorGuncelle() {
-   return skor++;
+    return skor++;
   }
 }
 
@@ -64,9 +65,11 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru() {
+  let skor = Math.floor(Math.random() * 16) + 10;
+  return skor
 }
+console.log(takimSkoru())
 
 
 
@@ -84,12 +87,24 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
   "EvSahibi": 92,
   "KonukTakim": 80
 }
-*/ 
+*/
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(takimSkoru, ceyrekSayisi) {
+  const sonuc = {
+    "EvSahibi": 0,
+    "KonukTakim": 0,
+  }
+  for (let ceyrek = 1; ceyrek <= ceyrekSayisi; ceyrek++) {
+    let evSahibiSkor = takimSkoru()
+    let konukTakimSkor = takimSkoru()
+
+    sonuc.EvSahibi += evSahibiSkor;
+    sonuc.KonukTakim += konukTakimSkor;
+  }
+  return sonuc;
+
 }
-
+console.log(macSonucu(takimSkoru, 4))
 
 
 
@@ -99,7 +114,7 @@ function macSonucu(/*Kodunuzu buraya yazınız*/){
 Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   1. Görev 2'de oluşturduğunuz 'takimSkoru'nu callback fonskiyonunu olarak ilk parametrede alın
   2. takimSkoru callback fonksiyonunu kullanarak, EvSahibi ve KonukTakim için bir skor üretin
-  3. Bir object olarak EvSahibi ve KonukTakim skorunu dönün
+  3. Bir object olarak EvSahibi ve KonukTakim skorunu dönün  
   
 Örneğin: periyotSkoru(takimSkoru) çalıştırınca aşağıdaki object'i dönmeli
 {
@@ -109,11 +124,16 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(takimSkoru) {
+  const periyotSkor = {
+    "EvSahibi": takimSkoru(),
+    "KonukTakim": takimSkoru(),
+  }
+  return periyotSkor;
 
 }
 
+console.log(periyotSkoru(takimSkoru))
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -146,15 +166,22 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periyotSkoru, takimSkoru, ceyrekSayisi) {
+  let scoreBoard = [];
+  for (let i = 0; i < ceyrekSayisi; i++) {
+    const periyotSonucu = periyotSkoru(takimSkoru);
+    console.log(periyotSonucu);
+    const periyotSonucuStr = `${i + 1}.Periyot: Ev Sahibi ${periyotSonucu.EvSahibi} - Konuk Takım ${periyotSonucu.KonukTakim} `;
+    scoreBoard.push(periyotSonucuStr)
+  }
+
 }
 
 
 
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
-function sa(){
+function sa() {
   console.log('Kodlar çalışıyor');
   return 'as';
 }
